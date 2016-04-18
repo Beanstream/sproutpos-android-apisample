@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/sdkheader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:text="@string/sdk_sub_header"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/integrationIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/sdkheader"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/ic_xml_blue_36dp" />
+
+    <TextView
+        android:id="@+id/integrationHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/integrationIcon"
+        android:layout_toEndOf="@+id/integrationIcon"
+        android:layout_toRightOf="@+id/integrationIcon"
+        android:text="@string/integration_header"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/welcome_landscape_header" />
+
+    <TextView
+        android:id="@+id/integrationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/integrationHeader"
+        android:layout_toEndOf="@+id/integrationIcon"
+        android:layout_toRightOf="@+id/integrationIcon"
+        android:paddingRight="5dp"
+        android:text="@string/integration_text"
+        android:textSize="@dimen/welcome_landscape_text" />
+
+    <ImageView
+        android:id="@+id/playWithCodeIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/integrationText"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/code_fork" />
+
+
+    <TextView
+        android:id="@+id/playWithCodeHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/playWithCodeIcon"
+        android:layout_toEndOf="@+id/playWithCodeIcon"
+        android:layout_toRightOf="@+id/playWithCodeIcon"
+        android:gravity="center"
+        android:text="@string/play_with_code_header"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/welcome_landscape_header" />
+
+    <TextView
+        android:id="@+id/playWithCodeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/playWithCodeHeader"
+        android:layout_toEndOf="@+id/playWithCodeIcon"
+        android:layout_toRightOf="@+id/playWithCodeIcon"
+        android:paddingRight="5dp"
+        android:text="@string/play_with_code"
+        android:textSize="@dimen/welcome_landscape_text" />
+
+    <Button
+        android:id="@+id/tryItButton"
+        style="@style/button_style"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_drawable"
+        android:text="@string/try_it_button_text" />
+
+</RelativeLayout>

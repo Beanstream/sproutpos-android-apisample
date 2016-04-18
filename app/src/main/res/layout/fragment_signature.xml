@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan" >
+
+    <com.beanstream.sample.goldeneggs.views.SignatureView
+        android:id="@+id/signatureView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/submitButton"
+        android:layout_weight="1"
+        android:gravity="center_horizontal" />
+
+    <Button
+        android:id="@id/submitButton"
+        android:layout_alignParentBottom="true"
+        style="@style/button_style"
+        android:text="Attach"
+        android:background="@drawable/button_drawable"
+        />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/progressBar"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>

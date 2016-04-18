@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Beanstream Mobile SDK</string>
+    <string name="action_settings">Settings</string>
+    <string name="remember_me_text">Remember Me</string>
+    <string name="sign_in_button_text">Log in</string>
+
+    <string name="pref_pinpad">PIN pad</string>
+    <string name="pref_pinpad_title">PIN Pad Settings</string>
+    <string name="pref_pinpad_update_button">Update PIN pad</string>
+    <string name="pref_update_pinpad_already_updated">Your PIN pad software appears to be up to date.\n\nAre you sure you want to proceed?\n</string>
+    <string name="pref_update_pinpad_software_update">Confirm Software Update</string>
+    <string name="update_pinpad_mandatory_update">Mandatory Software Update</string>
+    <string name="update_pinpad_mandatory_message">Your PIN pad terminal requires a software update which will take about one minute to complete. Please ensure you are connected to the internet and that your PIN pad is connected, then tap \'Apply Update\'.</string>
+    <string name="pinpad_manual_update_text_portrait">You will be notified occasionally about mandatory updates required for your PIN pad. If you would like to update manually please press \'Update PIN pad\'.\n\nUpdates take about 1 minute.</string>
+    <string name="pinpad_manual_update_text_lanscape">You will be notified occasionally about mandatory updates required for your PIN pad. If you would like to update manually please press \'Update PIN pad\'. Updates take about 1 minute.</string>
+    <string name="dialog_update_button">Apply Update</string>
+    <string name="dialog_cancel_button">Cancel</string>
+    <string name="dialog_not_now_button">Not Now</string>
+    <string name="initialization_failed_message">Initialization Failed - please reboot terminal</string>
+    <string name="initialized_message">PIN pad initialized</string>
+    <string name="dialog_password_retry_button">Retry</string>
+    <string name="session_retry_title">Session Expired</string>
+    <string name="session_retry_message">Enter password to continue</string>
+    <string name="language_english">eng</string>
+    <string name="pin_pad_not_connected">PIN pad is not connected</string>
+    <string name="tab_pay">Pay</string>
+    <string name="tab_transactions">Transactions</string>
+    <string name="tab_account">Account</string>
+    <string name="update_progress_dialog_message">Updating PIN pad</string>
+    <string name="update_successful_message">Update Successful</string>
+    <string name="update_failed_message">Update Failed (%1$s)</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="payment_methods_title">Payment Methods</string>
+    <string name="invalid_session_dialog_message">Session Invalid - Please login again.</string>
+    <string name="remember_me_error_message">Remember Me Requires Android 4.3 or higher</string>
+    <string name="internet_not_available">Internet not available</string>
+    <string name="please_fill_out_all_fields">Please fill out all fields</string>
+    <string name="signature_required_text">Signature must be signed</string>
+    <string name="play_with_code">Modify this app\'s code at our <a href="http://developer.beanstream.com/code-garden/#server-sdk">developer portal</a> to see how easy it is to integrate to our Mobile SDK. No physical terminal or account needed.</string>
+    <string name="play_with_code_header">Play with the Code</string>
+    <string name="integration_text">This app\'s source code shows how easy it is to integrate to our mobile SDK. We kept it basic and simulate a payment terminal and API calls to streamline your development.</string>
+    <string name="integration_header">Integration is Easy</string>
+    <string name="sdk_sub_header">mobile sdk sample app</string>
+    <string name="try_it_button_text">Try It</string>
+    <string name="initializing_pinpad_text">Initializing PIN pad</string>
+    <string name="product_details_text">Made with real gold!</string>
+    <string name="product_name">Golden Egg</string>
+    <string name="transaction_amount">$5.00</string>
+</resources>

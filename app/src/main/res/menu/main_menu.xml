@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".signin.SignInActivity">
+
+    <item
+        android:id="@+id/action_initialize_disconnected"
+        android:icon="@drawable/ic_emv_disconnected"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_initialize_connected"
+        android:icon="@drawable/ic_emv_connected"
+        app:showAsAction="ifRoom"/>
+
+</menu>

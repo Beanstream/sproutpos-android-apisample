@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_check" android:title="Check" android:icon="@drawable/ic_file_document_grey600_24dp" />
+    <item android:id="@+id/menu_cash" android:title="Cash" android:icon="@drawable/ic_cash_100_grey600_24dp" />
+    <item android:id="@+id/menu_debit" android:title="Debit" android:icon="@drawable/ic_credit_card_grey600_24dp"/>
+    <item android:id="@+id/menu_credit" android:title="Credit"  android:icon="@drawable/ic_credit_card_grey600_24dp"/>
+</menu>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan">
+
+
+    <TextView
+        android:id="@+id/account_login_label"
+        style="@style/account_text_size"
+        android:paddingBottom="10dp"
+        android:paddingRight="5dp"
+        android:paddingTop="20dp"
+        android:text="Account Login"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+    <TextView
+        android:id="@+id/account_login"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/account_login_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="20dp"
+        android:text="  MyCompany"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+
+    <TextView
+        android:id="@+id/user_label"
+        style="@style/account_details_label"
+        android:layout_below="@id/account_login_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="user"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+    <TextView
+        android:id="@+id/account_user"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/account_login"
+        android:layout_toRightOf="@id/user_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="  babramovitch"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+
+    <TextView
+        android:id="@+id/company_label"
+        style="@style/account_details_label"
+        android:layout_below="@id/user_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="company"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+    <TextView
+        android:id="@+id/account_company_name"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_label"
+        android:layout_toRightOf="@id/company_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="  My Company"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/accountTextSize"
+
+        app:layout_widthPercent="50%" />
+
+
+    <TextView
+        android:id="@+id/account_details_label"
+        style="@style/account_details_label"
+        android:layout_below="@id/company_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="company phone #"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+    <TextView
+        android:id="@+id/account_phone"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/company_label"
+        android:layout_toRightOf="@id/account_details_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="  123-456-7890"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+
+    <TextView
+        android:id="@+id/currency_label"
+        style="@style/account_details_label"
+        android:layout_below="@+id/account_details_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="currency"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+    <TextView
+        android:id="@+id/account_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/account_details_label"
+        android:layout_toRightOf="@id/currency_label"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="  CAD"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/accountTextSize"
+        app:layout_widthPercent="50%" />
+
+
+</android.support.percent.PercentRelativeLayout>
