@@ -17,7 +17,6 @@ repositories {
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.beanstream.sample.goldeneggs"
         minSdkVersion 16
@@ -25,7 +24,6 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
     signingConfigs {
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
@@ -40,12 +38,14 @@ android {
             exclude 'META-INF/notice.txt'
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -61,11 +61,11 @@ dependencies {
 
     compile 'com.cocosw:bottomsheet:1.0@aar'
 
-    compile(group: 'com.beanstream.android.sdk', name: 'BeanstreamMobileSDK', version: '2.0.1', ext: 'aar')
-    compile(group: 'com.beanstream.android.sdk', name: 'BeanstreamTransportSDK', version: '2.0.1', ext: 'aar')
-    compile(group: 'com.beanstream.android.sdk', name: 'EMVMobileSDK', version: '2.0.1', ext: 'aar')
+    compile 'com.beanstream.android.sdk:BeanstreamMobileSDK:2.0.1@aar'
+    compile 'com.beanstream.android.sdk:BeanstreamTransportSDK:2.0.1@aar'
+    compile 'com.beanstream.android.sdk:EMVMobileSDK:2.0.1@aar'
 
-    compile(name: 'BeanstreamSimulator-release', ext: 'aar')
+    compile 'com.beanstream.android.sdk:sproutpos-android-apisimulator:1.0.0@aar'
 
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
@@ -80,4 +80,3 @@ dependencies {
         exclude module: 'xpp3'
     }
 }
-
