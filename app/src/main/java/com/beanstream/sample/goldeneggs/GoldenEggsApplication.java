@@ -34,7 +34,7 @@ public class GoldenEggsApplication extends Application {
      * with a real merchant account and a physical iCMP.
      */
     public boolean isSimulation() {
-        return false;
+        return true;
     }
 
     @Override
