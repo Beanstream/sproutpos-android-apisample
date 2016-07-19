@@ -124,12 +124,10 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -191,7 +189,13 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         super.onResume();
         EventBus.getDefault().registerSticky(this);
 
-        //We don't want to start/stop the pin pad service while processing a transaction
+        /*
+        Used to start/stop the pin pad service. We host the actual logic in the GoldenEggsApplication class.
+        It enables us to not start/stop the service when switching between activities or rotating, but still
+        stop it when we fully leave the app, helping to save battery power.
+
+        We don't want to start/stop the pin pad service while processing a transaction
+        */
         if (!currentFragment.equals(PROCESSING_FRAGMENT)) {
             ((GoldenEggsApplication) getApplication()).activityResumed();
         }
@@ -261,12 +265,12 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         they are using the PIN pad.
         */
         if (beanstreamAPI.isRememberMe() && beanstreamAPI.isSessionSaved()) {
+
             /*
             On EMV transactions, this will enable tips to be prompted on the iCMP.
-            Tips only need to be altered when changes are made as the values are persisted in the SDK
-
             When tips are enabled, you cannot do contactless transactions.
             */
+
             int[] tipPercentPresets = new int[]{10, 15, 20};
             beanstreamAPI.processTransaction(request, /* enableTips */ true, tipPercentPresets);
         } else {
@@ -341,11 +345,11 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
     @SuppressWarnings("unused")
     public void onEventMainThread(TransactionError transactionError) {
         /*
-         A transaction error will only occur in the following two circumstances
+         A transaction error will only occur in the following circumstances
 
-         1) You attempt to do an EMV transaction and the PIN pad is not connected
-         2) You do an EMV transaction and the PIN pad fails to initialize.
-
+         1) You attempt to do a transaction before calling create session, or after calling abandon session.
+         2) You attempt to do an EMV transaction and the PIN pad is not connected
+         3) You do an EMV transaction and the PIN pad fails to initialize.
         */
         EventBus.getDefault().removeStickyEvent(transactionError);
         getSupportFragmentManager().popBackStack();
@@ -608,6 +612,20 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
     @SuppressWarnings("unused")
     public void onEventMainThread(PinPadStateChangeEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
+
+        /*
+        Use this to change icons and give visual queues in the app of connection status changes.
+
+        Note - Do not use this event to initiate actions on the iCMP.
+
+        The change to connected status, does not always mean the iCMP is "ready" to initialize or process a transaction.
+        During the initial reboot there is a delay between when it says it's ready, and when it's actually ready.
+        If you initiate an iCMP action on the change, it might fail.
+
+        However, If you simply turn your bluetooth on/off it would be ready when the event triggers.
+        Unfortunately we do not know if the state change is happening during a reboot.
+        */
+
         //Invalidating the menu so the actionbar will update with the correct icon
         invalidateOptionsMenu();
     }
@@ -669,11 +687,16 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
 
         EventBus.getDefault().unregister(this);
 
-        //We don't want to start/stop the pin pad service while processing a transaction
+        /*
+        Used to start/stop the pin pad service. We host the actual logic in the application class.
+        It enables us to not start/stop the service when switching between activities or rotating, but still
+        stop it when we fully leave the app, helping to save battery power.
+
+        We don't want to start/stop the pin pad service while processing a transaction
+        */
         if (!currentFragment.equals(PROCESSING_FRAGMENT)) {
             ((GoldenEggsApplication) getApplication()).activityPaused();
         }
-
     }
 
     @Override
@@ -718,5 +741,4 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
 
         super.onDestroy();
     }
-
 }
