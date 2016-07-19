@@ -71,6 +71,7 @@ public class GoldenEggsApplication extends Application {
      */
     @SuppressWarnings("unused")
     public void onEventMainThread(BluetoothStateChangeEvent event) {
+        EventBus.getDefault().removeStickyEvent(event);
 
         isBluetoothEnabled = event.isBluetoothOn();
 

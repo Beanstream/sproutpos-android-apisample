@@ -27,11 +27,11 @@ public class BluetoothReceiver extends BroadcastReceiver {
 
             switch (state) {
                 case BluetoothAdapter.STATE_OFF:
-                    EventBus.getDefault().post(new BluetoothStateChangeEvent(false));
+                    EventBus.getDefault().postSticky(new BluetoothStateChangeEvent(false));
                     break;
 
                 case BluetoothAdapter.STATE_ON:
-                    EventBus.getDefault().post(new BluetoothStateChangeEvent(true));
+                    EventBus.getDefault().postSticky(new BluetoothStateChangeEvent(true));
                     break;
 
             }
