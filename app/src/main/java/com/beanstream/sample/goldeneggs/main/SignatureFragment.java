@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -67,6 +68,17 @@ public class SignatureFragment extends Fragment {
                 }else{
                     Toast.makeText(getActivity(), R.string.signature_required_text, Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        ViewTreeObserver viewTreeObserver = signatureView.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                signatureView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                int width = signatureView.getMeasuredWidth();
+                int height = signatureView.getMeasuredHeight();
+                signatureView.setDimensions(width, height);
             }
         });
 

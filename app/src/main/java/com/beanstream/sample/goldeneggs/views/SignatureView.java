@@ -4,11 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -19,50 +19,67 @@ public class SignatureView extends View {
 
     private static final float TOUCH_TOLERANCE = 4;
 
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-    private Path mPath;
-    private Paint mPaint;
-    private int backgndColor = Color.LTGRAY;
+    private Bitmap bitmap;
+    private Canvas canvas;
+    private Path path;
+    private Paint paint;
 
     private float mX, mY;
 
+    int height, width;
+
     private boolean hasSignature = false;
+
+    public signatureCallback callback;
+
+    public interface signatureCallback {
+        void hasSignature(boolean hasSignature);
+    }
 
     public SignatureView(Context c, AttributeSet a) {
         super(c, a);
 
-        mPaint = new Paint(Paint.DITHER_FLAG);
-        mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.BLACK);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(2);
+        paint = new Paint(Paint.DITHER_FLAG);
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStrokeWidth(2);
+        paint.setFilterBitmap(true);
 
-        mPath = new Path();
+        path = new Path();
+    }
 
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        int height = metrics.heightPixels / 2;// 219;
-        int width = metrics.widthPixels / 2; // 714;
-        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        mCanvas = new Canvas(mBitmap);
-
+    /**
+     * This should be called once we know the size of the view holding the bitmap
+     *
+     * @param width  Width of bitmap
+     * @param height Height of bitmap
+     */
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
         clear();
+    }
+
+
+    public void hasSignature(signatureCallback callback) {
+        this.callback = callback;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        canvas.drawBitmap(mBitmap, 0, 0, mPaint);
-        canvas.drawPath(mPath, mPaint);
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, 0, 0, paint);
+            canvas.drawPath(path, paint);
+        }
     }
 
     private void touch_start(float x, float y) {
-        mPath.reset();
-        mPath.moveTo(x, y);
+        path.reset();
+        path.moveTo(x, y);
         mX = x;
         mY = y;
     }
@@ -71,19 +88,22 @@ public class SignatureView extends View {
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+            path.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
             mX = x;
             mY = y;
             hasSignature = true;
+            if (callback != null) {
+                callback.hasSignature(true);
+            }
         }
     }
 
     private void touch_up() {
-        mPath.lineTo(mX, mY);
+        path.lineTo(mX, mY);
         // commit the path to our offscreen
-        mCanvas.drawPath(mPath, mPaint);
+        canvas.drawPath(path, paint);
         // kill this so we don't double draw
-        mPath.reset();
+        path.reset();
     }
 
     @Override
@@ -110,37 +130,40 @@ public class SignatureView extends View {
 
     public void clear() {
 
-        mCanvas = new Canvas(mBitmap);
-        mCanvas.drawColor(backgndColor);
-        RectF border = new RectF(1, 1, mBitmap.getWidth() - 1, mBitmap.getHeight() - 1);
-        mCanvas.drawRoundRect(border, 12f, 12f, mPaint);
+        canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.LTGRAY);
+        RectF border = new RectF(1, 1, width - 1, height - 1);
+        canvas.drawRoundRect(border, 12f, 12f, paint);
 
-        mPath = new Path();
+        path = new Path();
         invalidate();
         hasSignature = false;
-    }
-
-    @Override
-    protected void onSizeChanged(int width, int height, int oldw, int oldh) {
-
-
-        int curW = mBitmap != null ? mBitmap.getWidth() : 714;
-        int curH = mBitmap != null ? mBitmap.getHeight() : 219;
-        if (curW >= width && curH >= height) {
-            return;
-        }else{
-            mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            mCanvas = new Canvas(mBitmap);
-            clear();
+        if (callback != null) {
+            callback.hasSignature(false);
         }
     }
 
-    public Bitmap getSignatureBitMap(){
-        return mBitmap;
+    public Bitmap getSignatureBitMap() {
+        float scalePercent = 0.4f;
+        return resizeBitmap(bitmap, (int) (bitmap.getWidth() * scalePercent), (int) (bitmap.getHeight() * scalePercent), scalePercent);
     }
 
     public boolean isSigned() {
         return hasSignature;
     }
+
+    public Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight, float scalePercent) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.RGB_565);
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(scalePercent, scalePercent, 0, 0);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+    }
 }
+
 
