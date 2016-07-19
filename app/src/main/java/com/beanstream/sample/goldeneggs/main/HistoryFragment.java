@@ -29,6 +29,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.greenrobot.event.EventBus;
 
@@ -169,7 +170,7 @@ public class HistoryFragment extends Fragment {
         public void onBindViewHolder(final SearchResultsViewHolder searchViewHolder, final int i) {
             final SearchTransactionResponse.TransactionDetail transactionDetail = transactionDetails.get(i);
 
-            DateTime date = DateTime.parse(transactionDetail.getTrnDateTime(), dateSourceFormat);
+            DateTime date = DateTime.parse(transactionDetail.getTrnDateTime(), dateSourceFormat.withLocale(Locale.CANADA));
 
             searchViewHolder.date.setText(dateOutputFormat.print(date));
             searchViewHolder.time.setText(timeOutputFormat.print(date));
