@@ -3,6 +3,7 @@ package com.beanstream.sample.goldeneggs.main;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -40,6 +41,7 @@ import com.beanstream.sample.goldeneggs.R;
 import com.beanstream.sample.goldeneggs.events.LoadGetReceiptEvent;
 import com.beanstream.sample.goldeneggs.events.LoadSignatureEvent;
 import com.beanstream.sample.goldeneggs.events.TitleEvent;
+import com.beanstream.sample.goldeneggs.settings.SettingsActivity;
 import com.beanstream.sample.goldeneggs.signin.SignInActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -223,6 +225,11 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
                 beanstreamAPI.abandonSession();
                 beanstreamAPI.clearSavedPassword();
                 finish();
+                break;
+
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -534,26 +541,53 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
             }
         });
 
-
         passwordRetryDialog.show();
     }
 
+    /**
+     * This event is returned after calling {@link BeanstreamAPI#initializePinPad()}
+     * <p/>
+     * The PIN pad can only be successfully initialized once per PIN pad reboot.
+     * The "isInitialized" method returns false if it's already been initialized.
+     * <p/>
+     * If the initialize attempt encounters an error it will return an error
+     * {@link InitCardReaderResponse#INITIALIZATION_FAILED_ERROR_CODE
+     * <p/>
+     * This event gets triggered on every EMV transaction.  Events triggered this way
+     * will have the isSilent flag set to true, so the reaponse can be handled at a more
+     * appropriate time, such as if it indicates a pin pad update is required.
+     *
+     * @param initCardReaderResponse
+     */
     @SuppressWarnings("unused")
     public void onEventMainThread(InitCardReaderResponse initCardReaderResponse) {
         EventBus.getDefault().removeStickyEvent(initCardReaderResponse);
 
         showCheckoutButton();
 
-        if (initCardReaderResponse.isSuccessful() && initCardReaderResponse.isInitialized()) {
-            if (!initCardReaderResponse.isSilent()) {
-                if (initCardReaderResponse.isUpdateKeyEncryption()) {
+        if (initCardReaderResponse.isSuccessful()) {
+            if (initCardReaderResponse.isInitialized()) {
+                if (!initCardReaderResponse.isSilent()) {
+                    Toast.makeText(this, R.string.initialized_message, Toast.LENGTH_SHORT).show();
+                }
+
+                if (initCardReaderResponse.isUpdateKeyEncryption() && !initCardReaderResponse.isSilent()) {
                     showUpdateEncryptionKeyDialog(getString(R.string.update_pinpad_mandatory_message), getString(R.string.update_pinpad_mandatory_update));
                 }
-                Toast.makeText(this, R.string.initialized_message, Toast.LENGTH_LONG).show();
+            } else {
+                if (!initCardReaderResponse.isSilent()) {
+                    showErrorDialog("", getString(R.string.initialization_may_already_be_initialized));
+                }
             }
         } else {
             if (!initCardReaderResponse.isSilent()) {
-                showErrorDialog("", getString(R.string.initialization_failed_message));
+                if ((initCardReaderResponse.getErrorCode() == InitCardReaderResponse.INITIALIZATION_FAILED_ERROR_CODE)) {
+                    showErrorDialog("", getString(R.string.initialization_failed_message));
+                } else if (initCardReaderResponse.getErrorCode() == InitCardReaderResponse.INITIALIZATION_FAILED_ERROR_CODE || initCardReaderResponse.getErrorCode() == InitCardReaderResponse.TERMINAL_FAILURE || initCardReaderResponse.getErrorCode() == InitCardReaderResponse.SERIAL_FAILURE) {
+                    showErrorDialog("", initCardReaderResponse.getResponseMessage());
+                } else {
+                    showErrorDialog("", getString(R.string.initialization_may_already_be_initialized));
+                }
             }
         }
     }
@@ -590,7 +624,6 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
     }
 
     public void showUpdateProgressDialog() {
-
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage(getString(R.string.update_progress_dialog_message));
         progressDialog.setCancelable(false);
@@ -613,20 +646,20 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
     public void onEventMainThread(PinPadStateChangeEvent event) {
         EventBus.getDefault().removeStickyEvent(event);
 
-        /*
-        Use this to change icons and give visual queues in the app of connection status changes.
+       	/*
+        Use this to change icons and give visual queues in the app.
+	    E.G. Disable the payment button when disconnected.
 
-        Note - Do not use this event to initiate actions on the iCMP.
+	    Note - It is not recommended to initiate an initialization or EMV transaction based on this event.
+	    The change to connected status, does not always mean the iCMP is "ready" to initialize or process a
+	    transaction. During initial reboot there is a delay between when it says it's ready, and when it's
+	    actually ready. Attempting to trigger an initialization or transaction while it's rebooting and
+	    initially indicating a connected status, will fail. However, if you simply turn your bluetooth on/off
+	    it will be ready when the event triggers. Unfortunately we do not know if the state change is happening
+	    during a reboot.
+	    */
 
-        The change to connected status, does not always mean the iCMP is "ready" to initialize or process a transaction.
-        During the initial reboot there is a delay between when it says it's ready, and when it's actually ready.
-        If you initiate an iCMP action on the change, it might fail.
-
-        However, If you simply turn your bluetooth on/off it would be ready when the event triggers.
-        Unfortunately we do not know if the state change is happening during a reboot.
-        */
-
-        //Invalidating the menu so the actionbar will update with the correct icon
+        //Invalidating the menu so the actionbar will update with the correct icon state
         invalidateOptionsMenu();
     }
 

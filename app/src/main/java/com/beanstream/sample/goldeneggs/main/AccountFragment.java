@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.beanstream.mobilesdk.BeanstreamAPI;
@@ -68,13 +67,10 @@ public class AccountFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
         EventBus.getDefault().post(new TitleEvent(FRAGMENT_TITLE));
     }
-
 }
 

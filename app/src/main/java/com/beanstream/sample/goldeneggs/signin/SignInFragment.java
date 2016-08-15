@@ -68,7 +68,6 @@ public class SignInFragment extends Fragment {
         GoldenEggsApplication application = (GoldenEggsApplication) getActivity().getApplication();
         beanstreamAPI = application.getBeanstreamAPI();
 
-
         boolean isRememberMe = beanstreamAPI.isRememberMe();
 
         if (isRememberMe && beanstreamAPI.isPasswordSaved()) {
@@ -77,9 +76,7 @@ public class SignInFragment extends Fragment {
         }
 
         if (rememberMeCheckbox != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-
             rememberMeCheckbox.setChecked(isRememberMe);
-
             rememberMeCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -90,12 +87,9 @@ public class SignInFragment extends Fragment {
                     }
                 }
             });
-
         }else{
             rememberMeLayout.setVisibility(View.GONE);
         }
-
-
 
         if (application.isSimulation()) {
             companyLogin.setText("sampleCo");
@@ -129,18 +123,15 @@ public class SignInFragment extends Fragment {
 
             }
         });
-
         return rootView;
     }
 
     private void hideSimulatorHeader(View view) {
-
         view.findViewById(R.id.apiStateColorBlock).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.apiStateHeader).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.apiStateCredentials).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.apiStateColorBlock).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.apiStateImage).setVisibility(View.INVISIBLE);
-
     }
 
     private boolean areEmptyFields() {
@@ -162,6 +153,4 @@ public class SignInFragment extends Fragment {
         super.onResume();
         EventBus.getDefault().post(new TitleEvent(FRAGMENT_TITLE));
     }
-
-
 }

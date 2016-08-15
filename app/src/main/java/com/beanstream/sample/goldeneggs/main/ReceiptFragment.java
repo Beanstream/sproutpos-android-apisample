@@ -94,6 +94,4 @@ public class ReceiptFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
 
     }
-
 }
-

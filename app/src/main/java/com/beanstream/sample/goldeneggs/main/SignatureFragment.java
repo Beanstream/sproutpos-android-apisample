@@ -105,6 +105,5 @@ public class SignatureFragment extends Fragment {
         submitButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
     }
-
 }
 

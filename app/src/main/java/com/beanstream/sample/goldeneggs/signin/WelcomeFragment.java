@@ -34,7 +34,6 @@ public class WelcomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
 
         Button button = (Button) rootView.findViewById(R.id.tryItButton);
@@ -61,6 +60,5 @@ public class WelcomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
     }
-
 }
 

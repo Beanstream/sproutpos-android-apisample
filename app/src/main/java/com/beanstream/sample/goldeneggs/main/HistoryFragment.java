@@ -43,7 +43,6 @@ public class HistoryFragment extends Fragment {
     public final String FRAGMENT_TITLE = "Transactions";
     public HistoryCallback historyCallback = sDummyCallbacks;
 
-
     View rootView;
     BeanstreamAPI beanstreamAPI;
     ProgressBar progressBar;
@@ -89,7 +88,6 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_history, container, false);
 
@@ -123,12 +121,10 @@ public class HistoryFragment extends Fragment {
                 beanstreamAPI.searchTransaction(searchTransactionRequest);
             }
         }
-
         return rootView;
     }
 
     public static class SearchResultsViewHolder extends RecyclerView.ViewHolder {
-
         protected TextView date;
         protected TextView time;
         protected TextView transactionId;
@@ -145,7 +141,6 @@ public class HistoryFragment extends Fragment {
             amount = (TextView) view.findViewById(R.id.amount);
             transactionTypeImage = (ImageView) view.findViewById(R.id.card_image);
             transactionStatusImage = (ImageView) view.findViewById(R.id.transaction_status);
-
         }
     }
 

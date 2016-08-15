@@ -52,9 +52,7 @@ public class SaleFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-
         super.onAttach(context);
-
         try {
             initiatePayment = (payment_callback) getActivity();
         } catch (ClassCastException e) {
@@ -80,8 +78,6 @@ public class SaleFragment extends Fragment {
         progressBarLayout = (LinearLayout) rootView.findViewById(R.id.progressBarLayout);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
-
-
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +85,7 @@ public class SaleFragment extends Fragment {
                 final TransactionRequest transactionRequest = new TransactionRequest();
 
                 transactionRequest.setTrans_type(TransactionTypes.PURCHASE);
-                transactionRequest.setAmount("10.00");
+                transactionRequest.setAmount("5.00");
                 transactionRequest.setLatitude("48.438077");
                 transactionRequest.setLongitude("-123.36643");
 
@@ -99,27 +95,25 @@ public class SaleFragment extends Fragment {
                         switch (which) {
                             case R.id.menu_cash:
                                 transactionRequest.setPayment_method(PaymentMethods.CASH);
-                                initiatePayment.initiatePayment(transactionRequest);
                                 break;
 
                             case R.id.menu_check:
                                 transactionRequest.setPayment_method(PaymentMethods.CHECK);
-                                initiatePayment.initiatePayment(transactionRequest);
                                 break;
 
                             case R.id.menu_credit:
                                 transactionRequest.setPayment_method(PaymentMethods.CREDIT_EMV);
                                 transactionRequest.setEmvEnabled(true);
-                                initiatePayment.initiatePayment(transactionRequest);
                                 break;
 
                             case R.id.menu_debit:
                                 transactionRequest.setPayment_method(PaymentMethods.DEBIT_EMV);
                                 transactionRequest.setEmvEnabled(true);
-                                initiatePayment.initiatePayment(transactionRequest);
                                 break;
-
                         }
+
+                        initiatePayment.initiatePayment(transactionRequest);
+
                     }
                 }).show();
 
@@ -156,7 +150,6 @@ public class SaleFragment extends Fragment {
     public void showProgressBar() {
         checkoutButton.setVisibility(View.INVISIBLE);
         progressBarLayout.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -164,5 +157,4 @@ public class SaleFragment extends Fragment {
         super.onResume();
         EventBus.getDefault().post(new TitleEvent(FRAGMENT_TITLE));
     }
-
 }

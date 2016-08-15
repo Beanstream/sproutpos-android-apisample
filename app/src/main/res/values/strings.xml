@@ -17,6 +17,7 @@
     <string name="dialog_cancel_button">Cancel</string>
     <string name="dialog_not_now_button">Not Now</string>
     <string name="initialization_failed_message">Initialization Failed - please reboot terminal</string>
+    <string name="initialization_may_already_be_initialized">Could not initialize the PIN pad, it may already be initialized. Reboot terminal and re-initialize if you encounter any problems.</string>
     <string name="initialized_message">PIN pad initialized</string>
     <string name="dialog_password_retry_button">Retry</string>
     <string name="session_retry_title">Session Expired</string>
@@ -46,4 +47,7 @@
     <string name="product_details_text">Made with real gold!</string>
     <string name="product_name">Golden Egg</string>
     <string name="transaction_amount">$5.00</string>
+
+    <string name="settings_no_icmps_paired">No iCMPs paired</string>
+    <string name="settings_bluetooth_disabled">bluetooth disabled</string>
 </resources>

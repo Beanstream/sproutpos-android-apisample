@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beanstream.mobile.sdk.transport.entity.Error.CreateSessionError;
 import com.beanstream.mobile.sdk.transport.entity.Response.CreateSessionResponse;
@@ -81,8 +80,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void showErrorDialog(String title, String message) {
-
-
         errorDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle).create();
         errorDialog.setTitle(title);
         errorDialog.setMessage(message);
@@ -94,9 +91,7 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-
         errorDialog.show();
-
     }
 
     public void onEventMainThread(TryItEvent event) {
@@ -109,7 +104,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(CreateSessionResponse response) {
-
         EventBus.getDefault().removeStickyEvent(response);
 
         if (response.isAuthorized()) {
@@ -132,7 +126,6 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(CreateSessionError response) {
-
         EventBus.getDefault().removeStickyEvent(response);
 
         beanstreamAPI.clearSavedPassword();
@@ -143,14 +136,12 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         showErrorDialog("", response.getUserFacingMessage());
-
     }
 
     public void onEventMainThread(TitleEvent event) {
         TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         toolbarTitle.setText(event.getTitle());
     }
-
 
     @Override
     public void onPause() {
@@ -176,5 +167,4 @@ public class SignInActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
-
 }

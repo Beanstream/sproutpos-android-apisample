@@ -33,7 +33,6 @@ public class BluetoothReceiver extends BroadcastReceiver {
                 case BluetoothAdapter.STATE_ON:
                     EventBus.getDefault().postSticky(new BluetoothStateChangeEvent(true));
                     break;
-
             }
         }
     }

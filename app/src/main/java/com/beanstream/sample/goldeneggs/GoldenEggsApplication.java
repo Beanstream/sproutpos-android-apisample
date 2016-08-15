@@ -2,10 +2,13 @@ package com.beanstream.sample.goldeneggs;
 
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 
 import com.beanstream.mobilesdk.BeanstreamAPI;
 import com.beanstream.sample.goldeneggs.events.BluetoothStateChangeEvent;
+import com.beanstream.sample.goldeneggs.settings.HardwarePreferenceFragment;
 import com.beanstream.simulator.BeanstreamAPISimulator;
 
 import de.greenrobot.event.EventBus;
@@ -29,7 +32,7 @@ public class GoldenEggsApplication extends Application {
 
     /**
      * You can enable or disable the API simulator by toggling the API used below.
-     *
+     * <p/>
      * If you disable the simulator, the API will point to our production systems so you can try
      * with a real merchant account and a physical iCMP.
      */
@@ -51,12 +54,26 @@ public class GoldenEggsApplication extends Application {
             test things like device rotation, or leaving the app etc.
             */
 
-            beanstreamAPI = new BeanstreamAPISimulator(this, false, 2000);
+            beanstreamAPI = new BeanstreamAPISimulator(this, true, 2000);
         } else {
             beanstreamAPI = new BeanstreamAPI(this);
         }
 
         beanstreamAPI.enablePasswordRetryWhenRememberMeOff();
+
+        /*
+        If you are dealing with multiple iCMPs paired to your Android device at once, you need to tell
+        beanstreamAPI which one you would like to use.
+
+        If you don`t submit anything, it will default to the top one returned in the result list
+        when querying for attached devices. If the device you submit is no longer paired, it
+        will default to the top one returned as well.
+
+        The preference used below is configured in the settings screen on the HardwarePreferenceFragment
+        */
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String deviceName = preferences.getString(HardwarePreferenceFragment.PREFERENCE_KEY_ICMP, null);
+        beanstreamAPI.setActivePinPad(deviceName);
 
         handler = new Handler();
         isBluetoothEnabled = getBluetoothStatus();
@@ -68,6 +85,8 @@ public class GoldenEggsApplication extends Application {
      * Event that gets triggered from {@link com.beanstream.sample.goldeneggs.receivers.BluetoothReceiver}
      * <p/>
      * Used to start/stop the service as long as an activity is resumed.
+     * <p/>
+     * NOTE: We stop the service when bluetooth is turned off to save battery power.
      */
     @SuppressWarnings("unused")
     public void onEventMainThread(BluetoothStateChangeEvent event) {
