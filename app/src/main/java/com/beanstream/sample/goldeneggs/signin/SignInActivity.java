@@ -116,7 +116,6 @@ public class SignInActivity extends AppCompatActivity {
             }
             finish();
         } else {
-
             showErrorDialog("", response.getMessage());
             SignInFragment signInFragment = (SignInFragment) getSupportFragmentManager().findFragmentByTag(SIGNIN_FRAGMENT);
             if (signInFragment != null) {
