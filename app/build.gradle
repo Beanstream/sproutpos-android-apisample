@@ -61,9 +61,9 @@ dependencies {
 
     compile 'com.cocosw:bottomsheet:1.0@aar'
 
-    compile 'com.beanstream.android.sdk:BeanstreamMobileSDK:2.1.0-SNAPSHOT@aar'
-    compile 'com.beanstream.android.sdk:BeanstreamTransportSDK:2.1.0-SNAPSHOT@aar'
-    compile 'com.beanstream.android.sdk:EMVMobileSDK:2.1.0-SNAPSHOT@aar'
+    compile 'com.beanstream.android.sdk:BeanstreamMobileSDK:2.2.0-SNAPSHOT@aar'
+    compile 'com.beanstream.android.sdk:BeanstreamTransportSDK:2.2.0-SNAPSHOT@aar'
+    compile 'com.beanstream.android.sdk:EMVMobileSDK:2.2.0-SNAPSHOT@aar'
     compile 'com.beanstream.android.sdk:sproutpos-android-apisimulator:1.1.0-SNAPSHOT@aar'
 
     compile 'de.greenrobot:eventbus:2.4.0'

@@ -136,6 +136,6 @@
             android:textSize="@dimen/accountTextSize"
             app:layout_widthPercent="50%" />
 
-        
+
     </android.support.percent.PercentRelativeLayout>
 </ScrollView>

@@ -49,7 +49,6 @@ public class SaleFragment extends Fragment {
         public void initiatePayment(TransactionRequest request) {}
     };
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -103,12 +102,10 @@ public class SaleFragment extends Fragment {
 
                             case R.id.menu_credit:
                                 transactionRequest.setPayment_method(PaymentMethods.CREDIT_EMV);
-                                transactionRequest.setEmvEnabled(true);
                                 break;
 
                             case R.id.menu_debit:
                                 transactionRequest.setPayment_method(PaymentMethods.DEBIT_EMV);
-                                transactionRequest.setEmvEnabled(true);
                                 break;
                         }
 
@@ -116,7 +113,6 @@ public class SaleFragment extends Fragment {
 
                     }
                 }).show();
-
             }
         });
 

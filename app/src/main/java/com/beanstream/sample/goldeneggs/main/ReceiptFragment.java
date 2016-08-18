@@ -92,6 +92,5 @@ public class ReceiptFragment extends Fragment {
     private void showWebView(){
         webView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-
     }
 }
