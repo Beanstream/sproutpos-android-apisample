@@ -92,47 +92,7 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setVisibility(View.VISIBLE);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_pay).setIcon(R.drawable.ic_credit_card_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_transactions).setIcon(R.drawable.ic_list_white_24dp));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_account).setIcon(R.drawable.ic_account_white_24dp));
-
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                currentTab = tab.getPosition();
-
-                if (tab.getPosition() == 0 && previousTab != tab.getPosition()) {
-                    replaceFragment(new SaleFragment(), SALE_FRAGMENT, false);
-                } else if (tab.getPosition() == 1 && previousTab != tab.getPosition()) {
-                    replaceFragment(new HistoryFragment(), HISTORY_FRAGMENT, false);
-                } else if (tab.getPosition() == 2 && previousTab != tab.getPosition()) {
-                    AccountFragment accountFragment = new AccountFragment();
-                    Bundle args = new Bundle();
-                    args.putString("companyName", getIntent().getStringExtra("companyName"));
-                    args.putString("companyPhone", getIntent().getStringExtra("companyPhone"));
-                    args.putString("currency", getIntent().getStringExtra("currency"));
-                    accountFragment.setArguments(args);
-                    replaceFragment(accountFragment, ACCOUNT_FRAGMENT, false);
-                }
-
-                previousTab = tab.getPosition();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+        setupTabs();
 
         GoldenEggsApplication application = (GoldenEggsApplication) getApplication();
         beanstreamAPI = application.getBeanstreamAPI();
@@ -144,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
             transaction.commit();
             currentFragment = SALE_FRAGMENT;
         } else {
-
             Gson gson = new Gson();
             String json = savedInstanceState.getString("transactionRequest");
             Type type = new TypeToken<TransactionRequest>() {
@@ -158,10 +117,8 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
             completedTransactionId = savedInstanceState.getString("completedTransactionId", "");
             updateKeyEncryption = savedInstanceState.getBoolean("updateKeyEncryption", false);
 
-            if (currentFragment.equals(RECEIPT_FRAGMENT)) {
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                }
+            if (currentFragment.equals(RECEIPT_FRAGMENT) && getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
 
             if (!currentFragment.equals(SALE_FRAGMENT) && !currentFragment.equals(HISTORY_FRAGMENT) && !currentFragment.equals(ACCOUNT_FRAGMENT)) {
@@ -236,6 +193,49 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupTabs() {
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setVisibility(View.VISIBLE);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_pay).setIcon(R.drawable.ic_credit_card_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_transactions).setIcon(R.drawable.ic_list_white_24dp));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_account).setIcon(R.drawable.ic_account_white_24dp));
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                currentTab = tab.getPosition();
+
+                if (tab.getPosition() == 0 && previousTab != tab.getPosition()) {
+                    replaceFragment(new SaleFragment(), SALE_FRAGMENT, false);
+                } else if (tab.getPosition() == 1 && previousTab != tab.getPosition()) {
+                    replaceFragment(new HistoryFragment(), HISTORY_FRAGMENT, false);
+                } else if (tab.getPosition() == 2 && previousTab != tab.getPosition()) {
+                    AccountFragment accountFragment = new AccountFragment();
+                    Bundle args = new Bundle();
+                    args.putString("companyName", getIntent().getStringExtra("companyName"));
+                    args.putString("companyPhone", getIntent().getStringExtra("companyPhone"));
+                    args.putString("currency", getIntent().getStringExtra("currency"));
+                    accountFragment.setArguments(args);
+                    replaceFragment(accountFragment, ACCOUNT_FRAGMENT, false);
+                }
+
+                previousTab = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
     public void replaceFragment(Fragment fragment, String tag, boolean addToBackstack) {
@@ -318,7 +318,10 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
     public void onEventMainThread(final TransactionResponse response) {
         EventBus.getDefault().removeStickyEvent(response);
 
-        //Setting a flag that update is required now, so we can display it when they return to the sale screen.
+        /*
+        Setting a flag that update is required now, so we can display it when they return to the sale screen.
+        The check against this is handled in the onBackPressed() method.
+        */
         updateKeyEncryption = response.isUpdateKeyEncryption();
 
         ProcessingFragment processingFragment = (ProcessingFragment) getSupportFragmentManager().findFragmentByTag(PROCESSING_FRAGMENT);
@@ -469,7 +472,6 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         if (attachSignatureResponse.isSignatureAttached()) {
             beanstreamAPI.getPrintReceipt(completedTransactionId, getString(R.string.language_english));
         } else {
-
             SignatureFragment signatureFragment = (SignatureFragment) getSupportFragmentManager().findFragmentByTag(SIGNATURE_FRAGMENT);
             if (signatureFragment != null) {
                 signatureFragment.showSubmitButton();
@@ -505,6 +507,18 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         startActivity(intent);
     }
 
+    /**
+     * This event is triggered when {@link BeanstreamAPI#enablePasswordRetryWhenRememberMeOff()}
+     * is enabled, and a session was invalid during a network call.
+     * <p/>
+     * It will allow you to submit a new password to the API so the transaction can complete
+     * successfully.
+     * <p/>
+     * If the feature is enabled and this event is not handled, the API will wait 2 minutes for
+     * a response before finishing with a {@link SessionInvalidEvent}
+     *
+     * @param event empty value
+     */
     @SuppressWarnings("unused")
     public void onEventMainThread(PasswordRequiredEvent event) {
 
@@ -558,9 +572,6 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
      * If the initialize attempt encounters an error it will return an error
      * {@link InitCardReaderResponse#INITIALIZATION_FAILED_ERROR_CODE
      * <p/>
-     * This event gets triggered on every EMV transaction.  Events triggered this way
-     * will have the isSilent flag set to true, so the reaponse can be handled at a more
-     * appropriate time, such as if it indicates a pin pad update is required.
      *
      * @param initCardReaderResponse
      */
@@ -675,7 +686,6 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
     }
 
     public void showErrorDialog(String title, String message) {
-
         errorDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle).create();
         errorDialog.setTitle(title);
         errorDialog.setMessage(message);
