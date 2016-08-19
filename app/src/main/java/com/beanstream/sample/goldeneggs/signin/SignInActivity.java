@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.beanstream.mobile.sdk.transport.entity.Error.CreateSessionError;
 import com.beanstream.mobile.sdk.transport.entity.Response.CreateSessionResponse;
 import com.beanstream.mobilesdk.BeanstreamAPI;
-import com.beanstream.mobilesdk.iBeanstreamAPI;
+import com.beanstream.mobilesdk.BeanstreamEvents;
 import com.beanstream.sample.goldeneggs.GoldenEggsApplication;
 import com.beanstream.sample.goldeneggs.R;
 import com.beanstream.sample.goldeneggs.events.TitleEvent;
@@ -28,7 +28,7 @@ import de.greenrobot.event.EventBus;
  *
  * Created by babramovitch on 03/02/2016.
  */
-public class SignInActivity extends AppCompatActivity implements iBeanstreamAPI.CreateSession {
+public class SignInActivity extends AppCompatActivity implements BeanstreamEvents.CreateSession {
 
     BeanstreamAPI beanstreamAPI;
     Toolbar toolbar;

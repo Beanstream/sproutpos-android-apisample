@@ -38,7 +38,7 @@ import com.beanstream.mobile.sdk.transport.entity.Response.UpdatePinPadResponse;
 import com.beanstream.mobile.sdk.transport.events.PasswordRequiredEvent;
 import com.beanstream.mobile.sdk.transport.events.SessionInvalidEvent;
 import com.beanstream.mobilesdk.BeanstreamAPI;
-import com.beanstream.mobilesdk.iBeanstreamAPI;
+import com.beanstream.mobilesdk.BeanstreamEvents;
 import com.beanstream.sample.goldeneggs.GoldenEggsApplication;
 import com.beanstream.sample.goldeneggs.R;
 import com.beanstream.sample.goldeneggs.events.LoadGetReceiptEvent;
@@ -61,9 +61,9 @@ import de.greenrobot.event.EventBus;
  * Created by babramovitch on 03/02/2016.
  */
 public class MainActivity extends AppCompatActivity implements SaleFragment.payment_callback, HistoryFragment.HistoryCallback,
-        iBeanstreamAPI.RememberMe, iBeanstreamAPI.AbandonSession, iBeanstreamAPI.AttachSignature,
-        iBeanstreamAPI.GetReceipt, iBeanstreamAPI.InitializePinPad, iBeanstreamAPI.AuthenticateSession,
-        iBeanstreamAPI.PinPadState, iBeanstreamAPI.ProcessTransaction, iBeanstreamAPI.UpdatePinPad {
+        BeanstreamEvents.RememberMe, BeanstreamEvents.AbandonSession, BeanstreamEvents.AttachSignature,
+        BeanstreamEvents.GetReceipt, BeanstreamEvents.InitializePinPad, BeanstreamEvents.AuthenticateSession,
+        BeanstreamEvents.PinPadState, BeanstreamEvents.ProcessTransaction, BeanstreamEvents.UpdatePinPad {
 
     private final String SALE_FRAGMENT = "SALE";
     private final String PROCESSING_FRAGMENT = "PROCESSING";
