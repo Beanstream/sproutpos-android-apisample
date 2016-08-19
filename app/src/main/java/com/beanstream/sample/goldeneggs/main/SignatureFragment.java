@@ -3,6 +3,7 @@ package com.beanstream.sample.goldeneggs.main;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +52,7 @@ public class SignatureFragment extends Fragment {
 
         submitButton = (Button) rootView.findViewById(R.id.submitButton);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF000000, getResources().getColor(R.color.colorPrimary)));
+        progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF000000, ContextCompat.getColor(getActivity(),R.color.colorPrimary)));
         signatureView = (SignatureView) rootView.findViewById(R.id.signatureView);
         extras = getArguments();
 
