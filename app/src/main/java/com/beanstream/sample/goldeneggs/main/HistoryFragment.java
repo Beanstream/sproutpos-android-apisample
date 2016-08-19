@@ -19,7 +19,9 @@ import com.beanstream.mobile.sdk.transport.entity.Error.SearchTransactionError;
 import com.beanstream.mobile.sdk.transport.entity.Request.SearchTransactionRequest;
 import com.beanstream.mobile.sdk.transport.entity.Response.SearchTransactionResponse;
 import com.beanstream.mobile.sdk.transport.entity.TransactionTypes;
+import com.beanstream.mobile.sdk.transport.events.SessionInvalidEvent;
 import com.beanstream.mobilesdk.BeanstreamAPI;
+import com.beanstream.mobilesdk.iBeanstreamAPI;
 import com.beanstream.sample.goldeneggs.GoldenEggsApplication;
 import com.beanstream.sample.goldeneggs.R;
 import com.beanstream.sample.goldeneggs.events.TitleEvent;
@@ -38,7 +40,7 @@ import de.greenrobot.event.EventBus;
  *
  * Created by babramovitch on 03/02/2016.
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements iBeanstreamAPI.SearchTransaction {
 
     public final String FRAGMENT_TITLE = "Transactions";
     public HistoryCallback historyCallback = sDummyCallbacks;
@@ -272,6 +274,11 @@ public class HistoryFragment extends Fragment {
         EventBus.getDefault().removeStickyEvent(error);
         hideProgressBar();
         historyCallback.showErrorDialog("", error.getUserFacingMessage());
+    }
+
+    @Override
+    public void onEventMainThread(SessionInvalidEvent sessionInvalidEvent) {
+        //Handled in MainActivity
     }
 
     @Override
