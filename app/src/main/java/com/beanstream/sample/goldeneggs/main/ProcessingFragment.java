@@ -53,7 +53,7 @@ public class ProcessingFragment extends Fragment {
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         completedImage = (ImageView) rootView.findViewById(R.id.completedImage);
 
-        progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF000000, getResources().getColor(R.color.colorPrimary)));
+        progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF000000, ContextCompat.getColor(getActivity(),R.color.colorPrimary)));
 
         if (savedInstanceState != null) {
             status = savedInstanceState.getInt("status", PROCESSING);
