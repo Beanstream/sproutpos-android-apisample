@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.beanstream.mobile.sdk.transport.entity.Error.CreateSessionError;
 import com.beanstream.mobile.sdk.transport.entity.Response.CreateSessionResponse;
 import com.beanstream.mobilesdk.BeanstreamAPI;
+import com.beanstream.mobilesdk.BeanstreamEvents;
 import com.beanstream.sample.goldeneggs.GoldenEggsApplication;
 import com.beanstream.sample.goldeneggs.R;
 import com.beanstream.sample.goldeneggs.events.TitleEvent;
@@ -27,7 +28,7 @@ import de.greenrobot.event.EventBus;
  *
  * Created by babramovitch on 03/02/2016.
  */
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity implements BeanstreamEvents.CreateSession {
 
     BeanstreamAPI beanstreamAPI;
     Toolbar toolbar;
@@ -70,7 +71,6 @@ public class SignInActivity extends AppCompatActivity {
                 transaction.commit();
             }
         }
-
     }
 
     @Override
@@ -150,7 +150,6 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
@@ -159,7 +158,6 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
-
         if(errorDialog != null && errorDialog.isShowing()){
             errorDialog.dismiss();
         }

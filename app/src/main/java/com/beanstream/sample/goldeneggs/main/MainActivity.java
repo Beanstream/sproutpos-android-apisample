@@ -22,11 +22,14 @@ import android.widget.Toast;
 
 import com.beanstream.emv.entity.InitCardReaderResponse;
 import com.beanstream.emv.events.PinPadStateChangeEvent;
+import com.beanstream.mobile.sdk.transport.entity.Error.AbandonSessionError;
 import com.beanstream.mobile.sdk.transport.entity.Error.AttachSignatureError;
 import com.beanstream.mobile.sdk.transport.entity.Error.AuthenticateSessionError;
 import com.beanstream.mobile.sdk.transport.entity.Error.GetReceiptError;
+import com.beanstream.mobile.sdk.transport.entity.Error.RememberMeEncryptionError;
 import com.beanstream.mobile.sdk.transport.entity.Error.TransactionError;
 import com.beanstream.mobile.sdk.transport.entity.Request.TransactionRequest;
+import com.beanstream.mobile.sdk.transport.entity.Response.AbandonSessionResponse;
 import com.beanstream.mobile.sdk.transport.entity.Response.AttachSignatureResponse;
 import com.beanstream.mobile.sdk.transport.entity.Response.AuthenticateSessionResponse;
 import com.beanstream.mobile.sdk.transport.entity.Response.GetReceiptResponse;
@@ -35,6 +38,7 @@ import com.beanstream.mobile.sdk.transport.entity.Response.UpdatePinPadResponse;
 import com.beanstream.mobile.sdk.transport.events.PasswordRequiredEvent;
 import com.beanstream.mobile.sdk.transport.events.SessionInvalidEvent;
 import com.beanstream.mobilesdk.BeanstreamAPI;
+import com.beanstream.mobilesdk.BeanstreamEvents;
 import com.beanstream.sample.goldeneggs.GoldenEggsApplication;
 import com.beanstream.sample.goldeneggs.R;
 import com.beanstream.sample.goldeneggs.events.LoadGetReceiptEvent;
@@ -56,7 +60,10 @@ import de.greenrobot.event.EventBus;
  * <p/>
  * Created by babramovitch on 03/02/2016.
  */
-public class MainActivity extends AppCompatActivity implements SaleFragment.payment_callback, HistoryFragment.HistoryCallback {
+public class MainActivity extends AppCompatActivity implements SaleFragment.payment_callback, HistoryFragment.HistoryCallback,
+        BeanstreamEvents.RememberMe, BeanstreamEvents.AbandonSession, BeanstreamEvents.AttachSignature,
+        BeanstreamEvents.GetReceipt, BeanstreamEvents.InitializePinPad, BeanstreamEvents.AuthenticateSession,
+        BeanstreamEvents.PinPadState, BeanstreamEvents.ProcessTransaction, BeanstreamEvents.UpdatePinPad {
 
     private final String SALE_FRAGMENT = "SALE";
     private final String PROCESSING_FRAGMENT = "PROCESSING";
@@ -521,7 +528,6 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
      */
     @SuppressWarnings("unused")
     public void onEventMainThread(PasswordRequiredEvent event) {
-
         EventBus.getDefault().removeStickyEvent(event);
 
         final EditText passwordInput = new EditText(MainActivity.this);
@@ -561,6 +567,12 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         });
 
         passwordRetryDialog.show();
+    }
+
+    @Override
+    public void onEventMainThread(RememberMeEncryptionError rememberMeEncryptionError) {
+        EventBus.getDefault().removeStickyEvent(rememberMeEncryptionError);
+        showErrorDialog("Encryption Error", getString(R.string.encryption_error));
     }
 
     /**
@@ -788,5 +800,15 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         }
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onEventMainThread(AbandonSessionResponse abandonSessionResponse) {
+        //Event is ignored as we are closing the app regardless
+    }
+
+    @Override
+    public void onEventMainThread(AbandonSessionError abandonSessionError) {
+        //Event is ignored as we are closing the app regardless
     }
 }

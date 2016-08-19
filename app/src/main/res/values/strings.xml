@@ -50,4 +50,5 @@
 
     <string name="settings_no_icmps_paired">No iCMPs paired</string>
     <string name="settings_bluetooth_disabled">bluetooth disabled</string>
+    <string name="encryption_error">Oops! There was an error encrypting your credentials. Remember Me won\'t function until resolved.\n\n You may need to uninstall the application, and then add and remove a lock screen to completely resolve the issue.</string>
 </resources>
