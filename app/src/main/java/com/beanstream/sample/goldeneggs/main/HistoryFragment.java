@@ -176,6 +176,13 @@ public class HistoryFragment extends Fragment implements BeanstreamEvents.Search
             searchViewHolder.transactionTypeImage.setImageDrawable(getTransactionTypeImage(transactionDetail.getTrnType(), transactionDetail.getPaymentMethodByCardType()));
             searchViewHolder.transactionStatusImage.setImageDrawable(getStatusImage(transactionDetail.trnResponse));
 
+            searchViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    historyCallback.historyItemPressed(transactionDetails.get(searchViewHolder.getAdapterPosition()).getTrnId());
+                }
+            });
+
         }
 
         public Drawable getStatusImage(int status) {
@@ -236,13 +243,6 @@ public class HistoryFragment extends Fragment implements BeanstreamEvents.Search
             View itemView = LayoutInflater.
                     from(viewGroup.getContext()).
                     inflate(R.layout.search_list_item_two, viewGroup, false);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    historyCallback.historyItemPressed(transactionDetails.get(position).getTrnId());
-                }
-            });
 
             return new SearchResultsViewHolder(itemView);
         }
