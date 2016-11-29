@@ -107,20 +107,29 @@ public class SignInActivity extends AppCompatActivity implements BeanstreamEvent
         EventBus.getDefault().removeStickyEvent(response);
 
         if (response.isAuthorized()) {
-            if (!getIntent().getBooleanExtra("invalidSession", false)) {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.putExtra("companyName", response.session.merchant.getCompanyName());
-                intent.putExtra("companyPhone", response.session.merchant.getCompanyPhone());
-                intent.putExtra("currency", response.session.merchant.getCurrencyType());
-                startActivity(intent);
+            if(response.getMerchant().getTerminalType().equals(CreateSessionResponse.TERMINAL_TYPE_ENCRYPTED)) {
+                if (!getIntent().getBooleanExtra("invalidSession", false)) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.putExtra("companyName", response.session.merchant.getCompanyName());
+                    intent.putExtra("companyPhone", response.session.merchant.getCompanyPhone());
+                    intent.putExtra("currency", response.session.merchant.getCurrencyType());
+                    startActivity(intent);
+                }
+                finish();
+            }else{
+                showErrorDialog("Invalid Account Type", "This account type is not supported.");
+                showSignInButton();
             }
-            finish();
         } else {
             showErrorDialog("", response.getMessage());
-            SignInFragment signInFragment = (SignInFragment) getSupportFragmentManager().findFragmentByTag(SIGNIN_FRAGMENT);
-            if (signInFragment != null) {
-                signInFragment.showSignInButton();
-            }
+            showSignInButton();
+        }
+    }
+
+    private void showSignInButton(){
+        SignInFragment signInFragment = (SignInFragment) getSupportFragmentManager().findFragmentByTag(SIGNIN_FRAGMENT);
+        if (signInFragment != null) {
+            signInFragment.showSignInButton();
         }
     }
 

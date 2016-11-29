@@ -35,6 +35,7 @@ import com.beanstream.mobile.sdk.transport.entity.Response.AuthenticateSessionRe
 import com.beanstream.mobile.sdk.transport.entity.Response.GetReceiptResponse;
 import com.beanstream.mobile.sdk.transport.entity.Response.TransactionResponse;
 import com.beanstream.mobile.sdk.transport.entity.Response.UpdatePinPadResponse;
+import com.beanstream.mobile.sdk.transport.entity.TransactionOptions;
 import com.beanstream.mobile.sdk.transport.events.PasswordRequiredEvent;
 import com.beanstream.mobile.sdk.transport.events.SessionInvalidEvent;
 import com.beanstream.mobilesdk.BeanstreamAPI;
@@ -288,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
             */
 
             int[] tipPercentPresets = new int[]{10, 15, 20};
-            beanstreamAPI.processTransaction(request, /* enableTips */ true, tipPercentPresets);
+            beanstreamAPI.processTransaction(request, new TransactionOptions(TransactionOptions.MODE_TIPS_NO_CONTACTLESS, tipPercentPresets));
         } else {
             beanstreamAPI.authenticateSession();
         }
@@ -305,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements SaleFragment.paym
         EventBus.getDefault().removeStickyEvent(response);
         if (response.isSessionAuthenticated()) {
             int[] tipPercentPresets = new int[]{10, 15, 20};
-            beanstreamAPI.processTransaction(request, /* enableTips */ true, tipPercentPresets);
+            beanstreamAPI.processTransaction(request, new TransactionOptions(TransactionOptions.MODE_TIPS_NO_CONTACTLESS, tipPercentPresets));
         } else {
             getSupportFragmentManager().popBackStack();
             tabLayout.setVisibility(View.VISIBLE);
